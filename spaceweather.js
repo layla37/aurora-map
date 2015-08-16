@@ -47,11 +47,14 @@ var scrapeIndexPages = function( startingPoint, maxStartingPoint ) {
 	}
 
 	async.series( asyncCallbacks,
-			function (err, results) {
-				console.log("# of results: " + results.length);
-				console.log("series results=" + results);
+			function (err, results) {	
+				var mergedIds = [];
+				mergedIds = mergedIds.concat.apply(mergedIds, results);			
+				return mergedIds;
 			} );
 
 };
 
 scrapeIndexPages( 0, 500 );
+
+
