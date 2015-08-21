@@ -26,9 +26,11 @@ var parseUploadIds = function( bodyText ) {
 
 
 var requestSeriesWrapper = function(url, callback) {
+	var uids;
+
 	request( url, function ( error, response, body ) {
 			if ( !error && response.statusCode == 200 ) {
-				var uids = parseUploadIds( body );
+				uids = parseUploadIds( body );
 				callback( null, uids );
 			}
 		} );
@@ -38,8 +40,10 @@ var scrapeIndexPages = function( startingPoint, maxStartingPoint ) {
 	var baseMainPageURL = 'http://spaceweathergallery.com/index.php?&title=aurora&title2=lights&s=&starting_point=';
 	//make requests for a bunch of starting points
 	var requestURL;
+	var i;
 	var asyncCallbacks = [];
-	for ( var i = 0; i <= maxStartingPoint; i += 50 ) {
+
+	for ( i = 0; i <= maxStartingPoint; i += 50 ) {
 		requestURL = baseMainPageURL + i;
 
 		// construct an async callback for this request url
@@ -47,14 +51,15 @@ var scrapeIndexPages = function( startingPoint, maxStartingPoint ) {
 	}
 
 	async.series( asyncCallbacks,
-			function (err, results) {	
+			function (err, results) {
 				var mergedIds = [];
-				mergedIds = mergedIds.concat.apply(mergedIds, results);			
+
+				mergedIds = mergedIds.concat.apply(mergedIds, results);
 				return mergedIds;
 			} );
 
 };
 
-scrapeIndexPages( 0, 500 );
+scrapeIndexPages( 0, 200 );
 
 

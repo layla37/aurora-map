@@ -1,0 +1,13 @@
+{
+  "name": "aurora-map",
+  "version": "1.0.0",
+  "author": "Layla Mandella",
+  "description": "Data visualization of user-submitted data of where auroras have been spotted.",
+  "readme": "https://github.com/layla37/aurora-map/blob/master/README.md",
+  "repository": "https://github.com/layla37/aurora-map",
+  "dependencies": {
+    "async": "~1.4.2",
+    "promise": "~7.0.4",
+    "request": "~2.61.0"
+  }
+}
