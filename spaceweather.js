@@ -18,7 +18,7 @@ var parseUploadIds = function( bodyText ) {
 	// remove "upload_id="
 	for ( i = 0; i < matchesArray.length; i++ ) {
 		s = matchesArray[ i ];
-		uid = s.substring( 11, s.length );
+		uid = s.substring( 10, s.length );
 		uploadIds.push( uid );
 	}
 	return uploadIds;
@@ -29,19 +29,19 @@ var requestSeriesWrapper = function(url, callback) {
 	var uids;
 
 	request( url, function ( error, response, body ) {
-			if ( !error && response.statusCode == 200 ) {
-				uids = parseUploadIds( body );
-				callback( null, uids );
-			}
-		} );
-}
+		if ( !error && response.statusCode == 200 ) {
+			uids = parseUploadIds( body );
+			callback( null, uids );
+		}
+	} );
+};
 
 var scrapeIndexPages = function( startingPoint, maxStartingPoint ) {
-	var baseMainPageURL = 'http://spaceweathergallery.com/index.php?&title=aurora&title2=lights&s=&starting_point=';
 	//make requests for a bunch of starting points
+	var asyncCallbacks = [];
+	var baseMainPageURL = 'http://spaceweathergallery.com/index.php?&title=aurora&title2=lights&s=&starting_point=';
 	var requestURL;
 	var i;
-	var asyncCallbacks = [];
 
 	for ( i = 0; i <= maxStartingPoint; i += 50 ) {
 		requestURL = baseMainPageURL + i;
@@ -50,16 +50,15 @@ var scrapeIndexPages = function( startingPoint, maxStartingPoint ) {
 		asyncCallbacks.push( async.apply(requestSeriesWrapper, requestURL) );
 	}
 
-	async.series( asyncCallbacks,
-			function (err, results) {
-				var mergedIds = [];
+	async.series( asyncCallbacks, function (err, results) {
+			var mergedIds = [];
 
-				mergedIds = mergedIds.concat.apply(mergedIds, results);
-				return mergedIds;
-			} );
-
+			mergedIds = mergedIds.concat.apply(mergedIds, results);
+			return mergedIds;
+		} );
 };
 
-scrapeIndexPages( 0, 200 );
+scrapeIndexPages( 0, 100 );
+
 
 
