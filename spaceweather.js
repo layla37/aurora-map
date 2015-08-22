@@ -3,7 +3,6 @@ var async = require( 'async' );
 
 // contains all the upload ids that we have retrieved
 var uploadIds = [];
-var counter = 0;
 
 // Gets the body text of a spaceweather page and returns all the upload ids on that page in an array.
 var parseUploadIds = function( bodyText ) {
