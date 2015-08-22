@@ -1,8 +1,6 @@
 var request = require( 'request' );
 var async = require( 'async' );
 
-// contains all the upload ids that we have retrieved
-var uploadIds = [];
 
 // Gets the body text of a spaceweather page and returns all the upload ids on that page in an array.
 var parseUploadIds = function( bodyText ) {
@@ -35,6 +33,22 @@ var requestSeriesWrapper = function(url, callback) {
 	} );
 };
 
+/**
+ * @description get the URLs that contain the data we want (image URL, name, location, date)
+ * @param ids {array} upload IDs
+ * @returns array of URLS
+*/
+var userDataUrls = function( ids ) {
+	var baseURL = 'http://spaceweathergallery.com/indiv_upload.php?upload_id=';
+	var uploadUrls = [];
+	var i;
+
+	for ( i = 0; i < ids.length; i++ ) {
+		uploadUrls.push( baseURL + ids[i] );
+	}
+	return uploadUrls;
+};
+
 var scrapeIndexPages = function( startingPoint, maxStartingPoint ) {
 	//make requests for a bunch of starting points
 	var asyncCallbacks = [];
@@ -44,20 +58,18 @@ var scrapeIndexPages = function( startingPoint, maxStartingPoint ) {
 
 	for ( i = 0; i <= maxStartingPoint; i += 50 ) {
 		requestURL = baseMainPageURL + i;
-
 		// construct an async callback for this request url
 		asyncCallbacks.push( async.apply(requestSeriesWrapper, requestURL) );
 	}
 
-	async.series( asyncCallbacks, function (err, results) {
-			var mergedIds = [];
-
-			mergedIds = mergedIds.concat.apply(mergedIds, results);
-			return mergedIds;
+	async.series( asyncCallbacks, function ( err, results ) {
+			// flatten array
+			var mergedIds = [].concat.apply( [], results );
+			userDataUrls( mergedIds );
 		} );
 };
 
-scrapeIndexPages( 0, 100 );
+scrapeIndexPages( 0, 50 );
 
 
 
