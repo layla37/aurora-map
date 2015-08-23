@@ -2,7 +2,6 @@ var request = require( 'request' );
 var async = require( 'async' );
 var cheerio = require('cheerio');
 
-var AuroraData = [];
 
 // Gets the body text of a spaceweather page and returns all the upload ids on that page in an array.
 var parseUploadIds = function( bodyText ) {
