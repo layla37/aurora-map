@@ -1,6 +1,8 @@
 var request = require( 'request' );
 var async = require( 'async' );
+var cheerio = require('cheerio');
 
+var AuroraData = [];
 
 // Gets the body text of a spaceweather page and returns all the upload ids on that page in an array.
 var parseUploadIds = function( bodyText ) {
@@ -33,6 +35,69 @@ var requestSeriesWrapper = function(url, callback) {
 	} );
 };
 
+var getAuroraData = function( bodyText ) {
+	var auroraData = {};
+	var allLocationData;
+	var $ = cheerio.load( bodyText );
+
+	// <span class="photoLocationText">Taken by <font color="#FF0000">Layla Mandella</font> on March 13, 2014 @ Fairbanks, AK </span>
+	function getLocation( divContents ) {
+		var reg = /@[\s\S]*<\/span>/;
+		var location = divContents.match( reg );
+		return location.substring( 2, location.length - 7 );
+	}
+
+	function getAuroraDate( divContents ) {
+		var reg = /\w+\s\d+,\s\w+/g;
+		var matchesDate = divContents.match( reg );
+		return matchesDate;
+	}
+	
+	// get aurora image URL
+	auroraData.imgUrl = $('#main_pic').attr('src');
+	// grab div contents with data we want
+	allLocationData = $('.photoLocationText');
+	auroraData.location = getLocation( allLocationData );
+	auroraData.date = getAuroraDate( allLocationData );
+	auroraData.name = $('.photoLocationText font').html();
+
+	return auroraData;
+
+};
+
+var requestSeriesWrapper2 = function(url, callback) {
+	var auroraData = {};
+
+	request( url, function ( error, response, body ) {
+		if ( !error && response.statusCode == 200 ) {
+			setTimeout( function() {
+				auroraData = getAuroraData( body );
+				console.log('getting aurora data');
+				callback( null, auroraData );
+			}, 1000);
+		}
+	} );
+};
+
+
+var scrapeAuroraUploadPages = function( urls ) {
+	//make requests for a bunch of starting points
+	var asyncCallbacks = [];
+	var url;
+	var i;
+
+	for ( i = 0; i < urls.length; i++ ) {
+		url = urls[i];
+		// construct an async callback for this request url
+		asyncCallbacks.push( async.apply(requestSeriesWrapper2, url) );
+	}
+
+	async.series( asyncCallbacks, function ( err, results ) {
+		console.log(results);
+		
+		} );
+};
+
 /**
  * @description get the URLs that contain the data we want (image URL, name, location, date)
  * @param ids {array} upload IDs
@@ -46,7 +111,7 @@ var userDataUrls = function( ids ) {
 	for ( i = 0; i < ids.length; i++ ) {
 		uploadUrls.push( baseURL + ids[i] );
 	}
-	return uploadUrls;
+	scrapeAuroraUploadPages( uploadUrls );
 };
 
 var scrapeIndexPages = function( startingPoint, maxStartingPoint ) {
