@@ -1,6 +1,7 @@
 var request = require( 'request' );
 var async = require( 'async' );
 var cheerio = require('cheerio');
+var fs = require('fs');
 
 
 // Gets the body text of a spaceweather page and returns all the upload ids on that page in an array.
@@ -28,8 +29,11 @@ var requestSeriesWrapper = function(url, callback) {
 
 	request( url, function ( error, response, body ) {
 		if ( !error && response.statusCode == 200 ) {
-			uids = parseUploadIds( body );
-			callback( null, uids );
+			setTimeout( function() {
+				uids = parseUploadIds( body );
+				console.log('index page scraped for upload ids');
+				callback( null, uids );
+			}, 5000);
 		}
 	} );
 };
@@ -73,7 +77,7 @@ var requestSeriesWrapper2 = function(url, callback) {
 				auroraData = getAuroraData( body );
 				console.log('getting aurora data');
 				callback( null, auroraData );
-			}, 1000);
+			}, 5000);
 		}
 	} );
 };
@@ -110,7 +114,7 @@ var userDataUrls = function( ids ) {
 	for ( i = 0; i < ids.length; i++ ) {
 		uploadUrls.push( baseURL + ids[i] );
 	}
-	scrapeAuroraUploadPages( uploadUrls );
+	// scrapeAuroraUploadPages( uploadUrls );
 };
 
 var scrapeIndexPages = function( startingPoint, maxStartingPoint ) {
@@ -129,11 +133,19 @@ var scrapeIndexPages = function( startingPoint, maxStartingPoint ) {
 	async.series( asyncCallbacks, function ( err, results ) {
 			// flatten array
 			var mergedIds = [].concat.apply( [], results );
-			userDataUrls( mergedIds );
+
+			var stringOfUploadIds = '';
+			for ( var i = 0; i < mergedIds.length; i++ ) {
+				stringOfUploadIds += mergedIds[i] + '\n';
+			}
+
+			  fs.writeFileSync('upload_ids.csv', stringOfUploadIds);
+			  console.log('upload_ids.csv is ready');
+			// userDataUrls( mergedIds );
 		} );
 };
 
-scrapeIndexPages( 0, 50 );
+// scrapeIndexPages( 0, 50 );
 
 
 
