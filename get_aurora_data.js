@@ -18,14 +18,16 @@ var getAuroraData = function( bodyText ) {
 	// <span class="photoLocationText">Taken by <font color="#FF0000">Layla Mandella</font> on March 13, 2014 @ Fairbanks, AK </span>
 	function getLocation( divContents ) {
 		var reg = /@[\s\S]*<\/span>/;
-		var location = divContents.match( reg );
-		return location.substring( 2, location.length - 7 );
+		var divContentsString = divContents.toString();
+		var location = divContentsString.match( reg );
+		return location[0].replace(/\n/gm,'').substring( 2, location[0].length - 7 );
 	}
 
 	function getAuroraDate( divContents ) {
 		var reg = /\w+\s\d+,\s\w+/g;
-		var matchesDate = divContents.match( reg );
-		return matchesDate;
+		var dateString = divContents.toString();
+		var matchesDate = dateString.match( reg );
+		return matchesDate[0];
 	}
 
 	// get aurora image URL
@@ -68,7 +70,6 @@ var scrapeAuroraUploadPages = function( urls ) {
 	}
 
 	async.series( asyncCallbacks, function ( err, results ) {
-		console.log( 'callback called for async.series' );
 		console.log(results);
 
 		} );
@@ -92,7 +93,7 @@ var userDataUrls = function( ids ) {
 };
 
 // testing with just 2 upload IDs for now
-userDataUrls( [ 116898, 116887 ] );
+userDataUrls( [ 116877, 116859 ] );
 
 
 
