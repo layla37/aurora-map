@@ -1,4 +1,5 @@
-/* This grabs the aurora info we want and writes it to a file:
+/* This grabs the aurora info we want, creates an object with that data, then writes it to a file.
+	Data we want:
 	1) The URL of the main aurora image the user uploaded
 	2) The name of the photographer (user)
 	3) The location where the photo was taken
@@ -20,7 +21,7 @@ var getAuroraData = function( bodyText ) {
 		var reg = /@[\s\S]*<\/span>/;
 		var divContentsString = divContents.toString();
 		var location = divContentsString.match( reg );
-		return location[0].replace(/\n/gm,'').substring( 2, location[0].length - 7 );
+		return location[0].replace(/\n/gm,'').substring( 2, location[0].length - 9 );
 	}
 
 	function getAuroraDate( divContents ) {
@@ -49,7 +50,7 @@ var requestSeriesWrapper = function(url, callback) {
 		if ( !error && response.statusCode == 200 ) {
 			setTimeout( function() {
 				auroraData = getAuroraData( body );
-				console.log('getting aurora data');
+				console.log('getting aurora data from: ' + url);
 				callback( null, auroraData );
 			}, 5000);
 		}
@@ -70,8 +71,8 @@ var scrapeAuroraUploadPages = function( urls ) {
 	}
 
 	async.series( asyncCallbacks, function ( err, results ) {
-		console.log(results);
-
+		fs.writeFileSync('aurora_data.json', JSON.stringify(results), 'utf-8');
+			console.log('aurora_data.json is ready');
 		} );
 };
 
@@ -88,12 +89,11 @@ var userDataUrls = function( ids ) {
 	for ( i = 0; i < ids.length; i++ ) {
 		uploadUrls.push( baseURL + ids[i] );
 	}
-	console.log(uploadUrls);
 	scrapeAuroraUploadPages( uploadUrls );
 };
 
 // testing with just 2 upload IDs for now
-userDataUrls( [ 116877, 116859 ] );
+userDataUrls( [ 116814, 116756 ] );
 
 
 
