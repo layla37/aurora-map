@@ -27,14 +27,14 @@ var parseUploadIds = function( bodyText ) {
 
 var requestSeriesWrapper = function(url, callback) {
 	var uids;
-
+	var randomizeTimeout = Math.floor(Math.random()*(5000-2000+1)+2000);
 	request( url, function ( error, response, body ) {
 		if ( !error && response.statusCode == 200 ) {
 			setTimeout( function() {
 				uids = parseUploadIds( body );
-				console.log('index page scraped for upload ids');
+				console.log('page scraped for upload ids: ' + url);
 				callback( null, uids );
-			}, 5000);
+			}, randomizeTimeout );
 		}
 	} );
 };
@@ -65,7 +65,8 @@ var scrapeIndexPages = function( startingPoint, maxStartingPoint ) {
 		} );
 };
 
-// scrapeIndexPages( 0, 50 );
+// scrapeIndexPages( 0, 2500 );
+
 console.log('the function call is currently commented out');
 
 
