@@ -27,7 +27,7 @@ var parseUploadIds = function( bodyText ) {
 
 var requestSeriesWrapper = function(url, callback) {
 	var uids;
-	var randomizeTimeout = Math.floor(Math.random()*(5000-2000+1)+2000);
+	var randomizeTimeout = Math.floor( Math.random() * ( 5000 - 2000 + 1 ) + 2000 );
 	request( url, function ( error, response, body ) {
 		if ( !error && response.statusCode == 200 ) {
 			setTimeout( function() {
@@ -46,7 +46,7 @@ var scrapeIndexPages = function( startingPoint, maxStartingPoint ) {
 	var requestURL;
 	var i;
 
-	for ( i = 0; i <= maxStartingPoint; i += 50 ) {
+	for ( i = startingPoint; i <= maxStartingPoint; i += 50 ) {
 		requestURL = baseMainPageURL + i;
 		// construct an async callback for this request url
 		asyncCallbacks.push( async.apply(requestSeriesWrapper, requestURL) );

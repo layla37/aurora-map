@@ -45,7 +45,7 @@ var getAuroraData = function( bodyText ) {
 
 var requestSeriesWrapper = function(url, callback) {
 	var auroraData = {};
-	var randomizeTimeout = Math.floor(Math.random()*(5000-2000+1)+2000);
+	var randomizeTimeout = Math.floor( Math.random() * ( 5000 - 2000 + 1 ) + 2000 );
 
 	request( url, function ( error, response, body ) {
 		if ( !error && response.statusCode == 200 ) {
