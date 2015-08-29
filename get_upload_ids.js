@@ -27,8 +27,9 @@ var parseUploadIds = function( bodyText ) {
 
 var requestSeriesWrapper = function(url, callback) {
 	var uids;
-	var randomizeTimeout = Math.floor( Math.random() * ( 5000 - 2000 + 1 ) + 2000 );
-	request( url, function ( error, response, body ) {
+	var randomizeTimeout = Math.floor( Math.random() * ( 6000 - 3000 + 1 ) + 3000 );
+	var options = { url: url, headers: { 'User-Agent': 'https://github.com/layla37/aurora-map/blob/master/README.md' } };
+	request( options, function ( error, response, body ) {
 		if ( !error && response.statusCode == 200 ) {
 			setTimeout( function() {
 				uids = parseUploadIds( body );
