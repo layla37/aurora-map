@@ -92,8 +92,11 @@ var userDataUrls = function( ids ) {
 	scrapeAuroraUploadPages( uploadUrls );
 };
 
+var idsFromCsv = fs.readFileSync( 'upload_ids.csv', { 'encoding': 'utf-8'} );
+var arrayOfIds = idsFromCsv.split('\n');
+
 // testing with just 2 upload IDs for now
-userDataUrls( [ 116814, 116756 ] );
+userDataUrls( arrayOfIds );
 
 
 
