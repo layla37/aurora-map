@@ -29,7 +29,7 @@ var requestSeriesWrapper = function(url, callback) {
 	var uids;
 	// randomize the setTimeout between 3000 - 6000
 	var randomizeTimeout = Math.floor( Math.random() * 3000 + 3000 );
-	var options = { url: url, headers: { 'User-Agent': 'https://github.com/layla37/aurora-map/blob/master/README.md' } };
+	// var options = { url: url, headers: { 'User-Agent': '[put a URL to your README in github or somewhere else that describes why you are scraping this site . I removed mine in case someone wants to reuse this code]' } };
 	request( options, function ( error, response, body ) {
 		if ( !error && response.statusCode == 200 ) {
 			setTimeout( function() {
@@ -44,7 +44,7 @@ var requestSeriesWrapper = function(url, callback) {
 var scrapeIndexPages = function( startingPoint, maxStartingPoint ) {
 	//make requests for a bunch of starting points
 	var asyncCallbacks = [];
-	var baseMainPageURL = 'http://spaceweathergallery.com/index.php?&title=aurora&title2=lights&s=&starting_point=';
+	// var baseMainPageURL = 'http://spaceweathergallery.com/index.php?&title=aurora&title2=lights&s=&starting_point=';
 	var requestURL;
 	var i;
 
@@ -69,6 +69,6 @@ var scrapeIndexPages = function( startingPoint, maxStartingPoint ) {
 
 // scrapeIndexPages( 0, 2500 );
 
-console.log('the function call is currently commented out');
+console.log('the function call is currently commented out, so is the baseMainPageURL and options. You will need to update those with the correct info and uncomment them. ');
 
 

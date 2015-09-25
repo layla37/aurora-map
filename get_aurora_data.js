@@ -16,7 +16,6 @@ var getAuroraData = function( bodyText ) {
 	var allLocationData;
 	var $ = cheerio.load( bodyText );
 
-	// <span class="photoLocationText">Taken by <font color="#FF0000">Layla Mandella</font> on March 13, 2014 @ Fairbanks, AK </span>
 	function getLocation( divContents ) {
 		var reg = /@[\s\S]*<\/span>/;
 		var divContentsString = divContents.toString();
@@ -47,7 +46,7 @@ var requestSeriesWrapper = function(url, callback) {
 	var auroraData = {};
 	// randomize the setTimeout between 3000 - 6000
 	var randomizeTimeout = Math.floor( Math.random() * 3000 + 3000 );
-	var options = { url: url, headers: { 'User-Agent': 'https://github.com/layla37/aurora-map/blob/master/README.md' } };
+	// var options = { url: url, headers: { 'User-Agent': '[put a URL to your README in github or somewhere else that describes why you are scraping this site . I removed mine in case someone wants to reuse this code]' } };
 	request( options, function ( error, response, body ) {
 		if ( !error && response.statusCode == 200 ) {
 			setTimeout( function() {
@@ -83,7 +82,7 @@ var scrapeAuroraUploadPages = function( urls ) {
  * @returns array of URLS
 */
 var userDataUrls = function( ids ) {
-	var baseURL = 'http://spaceweathergallery.com/indiv_upload.php?upload_id=';
+	// var baseURL = 'http://spaceweathergallery.com/indiv_upload.php?upload_id=';
 	var uploadUrls = [];
 	var i;
 
@@ -99,6 +98,6 @@ var arrayOfIds = idsFromCsv.split('\n');
 
 // userDataUrls( arrayOfIds );
 
-console.log('the function call is currently commented out');
+console.log('the function call is currently commented out, so is baseURL and options. You will need to update those with the correct info and uncomment them. ');
 
 
