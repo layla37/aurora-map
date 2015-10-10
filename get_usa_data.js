@@ -10,7 +10,7 @@ var reg2 = /.*?\s+(?:(A[LRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|
 for ( var i = 0; i < jsonContent.length; i++ ) {
 	if( reg1.test(jsonContent[i].location) || reg2.test(jsonContent[i].location) ) {
 		console.log(jsonContent[i].location);
-		fs.appendFile('usa_aurora_data.json', JSON.stringify(jsonContent[i]) + ', ', 'utf-8');
+		fs.appendFile('usa_aurora_data.json', JSON.stringify(jsonContent[i]) + ',\n', 'utf-8');
 
 	}
 
