@@ -2,7 +2,7 @@
 
 **What does this do?**
 
-This will eventually be a data visualization of where people have spotted auroras and their images of what they saw. It will be shown by date over a map of the world.
+This will eventually be a data visualization of where people have spotted auroras and their images of what they saw.
 
 **Where I'm getting the data**
 
