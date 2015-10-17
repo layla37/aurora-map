@@ -1,4 +1,4 @@
-ISO31662A2(State), FIPS 5-2(State), ShortName(City), FIPS 55-3(City), FIPS 6-4(County(s)), FormalName(County(s))
+state, FIPS 5-2(State), city, FIPS 55-3(City), FIPS 6-4(County(s)), county
 AL,01,Abanda,00100,"017","Chambers County"
 AL,01,Abbeville,00124,"067","Henry County"
 AL,01,Adamsville,00460,"073","Jefferson County"
